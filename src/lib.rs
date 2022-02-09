@@ -1,6 +1,7 @@
 #![recursion_limit = "512"]
 
 mod components;
+mod services;
 
 use std::cell::RefCell;
 use std::rc::Rc;
