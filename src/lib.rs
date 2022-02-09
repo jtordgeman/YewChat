@@ -2,6 +2,9 @@
 
 mod components;
 
+use std::cell::RefCell;
+use std::rc::Rc;
+
 use wasm_bindgen::prelude::*;
 use yew::functional::*;
 use yew::prelude::*;
@@ -29,14 +32,29 @@ pub enum Route {
     NotFound,
 }
 
+pub type User = Rc<UserInner>;
+
+#[derive(Debug, PartialEq)]
+pub struct UserInner {
+    pub username: RefCell<String>,
+}
+
 #[function_component(Main)]
 fn main() -> Html {
+    let ctx = use_state(|| {
+        Rc::new(UserInner {
+            username: RefCell::new("initial".into()),
+        })
+    });
+
     html! {
-        <BrowserRouter>
-            <div class="flex w-screen h-screen">
-                <Switch<Route> render={Switch::render(switch)}/>
-            </div>
-        </BrowserRouter>
+        <ContextProvider<User> context={(*ctx).clone()}>
+            <BrowserRouter>
+                <div class="flex w-screen h-screen">
+                    <Switch<Route> render={Switch::render(switch)}/>
+                </div>
+            </BrowserRouter>
+        </ContextProvider<User>>
     }
 }
 
