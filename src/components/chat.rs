@@ -119,7 +119,11 @@ impl Component for Chat {
                                                 {m.from.clone()}
                                             </div>
                                             <div class="text-xs text-gray-500">
-                                                {m.message.clone()}
+                                                if m.message.ends_with(".gif") {
+                                                    <img class="mt-3" src={m.message.clone()}/>
+                                                } else {
+                                                    {m.message.clone()}
+                                                }
                                             </div>
                                         </div>
                                     </div>
